@@ -4,7 +4,6 @@ package net.engineeringdigest.journalApp.controller;
 import net.engineeringdigest.journalApp.entity.JournalEntry;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +21,7 @@ public class JournalEntryController {
     }
 
     @PostMapping
-    public boolean cretateEntry(@RequestBody JournalEntry myEntry){
+    public boolean createEntry(@RequestBody JournalEntry myEntry){
         journalEntries.put(myEntry.getId(), myEntry);
         return true;
     }
