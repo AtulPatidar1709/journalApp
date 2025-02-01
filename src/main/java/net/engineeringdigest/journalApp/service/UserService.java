@@ -9,13 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 
-@Component
+@Service
 @Slf4j
 public class UserService {
 
@@ -47,11 +48,15 @@ public class UserService {
 
     public void saveAdmin(User user){
         // Assign the default role "USER"
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        try{
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        user.setRoles(Arrays.asList("USER", "ADMIN")); // Set the roles in the user object
+            user.setRoles(Arrays.asList("USER", "ADMIN")); // Set the roles in the user object
 
-        userRepository.save(user);
+            userRepository.save(user);
+        } catch (Exception e){
+            log.error("");
+        }
     }
 
     public List<User> getAll(){
@@ -69,7 +74,5 @@ public class UserService {
     public User findByUserName(String userName){
         return userRepository.findByUserName(userName);
     }
-
-
 
 }
