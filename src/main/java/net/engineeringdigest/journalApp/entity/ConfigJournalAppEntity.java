@@ -10,27 +10,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.List;
 
-@Document(collection = "users")
+@Document(collection = "config_journal_app")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class User {
 
-    @Id
-    private ObjectId id;
-    @Indexed(unique = true)
-    @NonNull
-    private String userName;
-    private String email;
-    private boolean sentimentAnalysis;
+public class ConfigJournalAppEntity {
 
-    @NonNull
-    private String password;
-
-    @DBRef
-    private List<JournalEntry> journalEntries = new ArrayList<>();
-
-    private List<String> roles;
+    private String key;
+    private String value;
 
 }
