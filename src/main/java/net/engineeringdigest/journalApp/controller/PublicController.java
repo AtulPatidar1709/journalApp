@@ -1,24 +1,36 @@
 package net.engineeringdigest.journalApp.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import net.engineeringdigest.journalApp.api.response.QuotesResponse;
-import net.engineeringdigest.journalApp.api.response.WeatherResponse;
 import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.service.QuotesService;
+import net.engineeringdigest.journalApp.service.UserDetailsServiceIMPL;
 import net.engineeringdigest.journalApp.service.UserService;
+import net.engineeringdigest.journalApp.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/public")
-
+@Slf4j
 public class PublicController {
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserDetailsServiceIMPL userDetailsService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
 
     @Autowired
@@ -27,9 +39,29 @@ public class PublicController {
     @Autowired
     private QuotesService quotesService;
 
-    @PostMapping("/create-user")
-    public void createUser(@RequestBody User user){
+    @GetMapping("/check")
+    public String check(){
+        String check = "Ok";
+        return check;
+    }
+
+    @PostMapping("/signup")
+    public void signup(@RequestBody User user){
         userService.saveNewUser(user);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody User user){
+        try{
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword()));
+            UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUserName());
+            String jwtToken = jwtUtil.generateToken(userDetails.getUsername());
+            return new ResponseEntity<>(jwtToken, HttpStatus.OK);
+        } catch (AuthenticationException e) {
+            log.error("Exception occured while create Authentication", e);
+            return new ResponseEntity<>("Incorrect userName or password", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/quotes")
