@@ -8,7 +8,7 @@ spring:
 
   main:
     allow-circular-references: true
-  .profiles:
+  profiles:
       active: ${ENV:dev}
   mail:
     host: smtp.gmail.com
