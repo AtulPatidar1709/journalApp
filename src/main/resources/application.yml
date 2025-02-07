@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: classpath:/application.yml
   redis:
     host: ${REDIS_HOST}
     port: 17379
