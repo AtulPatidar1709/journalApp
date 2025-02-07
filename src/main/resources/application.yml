@@ -1,0 +1,38 @@
+#spring.main.allow-circular-references=true
+
+spring:
+  redis:
+    host: ${REDIS_HOST}
+    port: 17379
+    password: ${REDIS_PASS}
+
+  main:
+    allow-circular-references: true
+  .profiles:
+      active: ${ENV:dev}
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL}
+    password: ${EMAIL_PASS}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: 8080
+
+weather:
+  api:
+    key: ${WEATHER_KEY}
+
+quotes:
+  api:
+    key: ${QUOTES_KEY}
+    url: ${QUOTES_URI}
+
+#  servlet:
+#    context-path: /journal
