@@ -32,5 +32,10 @@ quotes:
     key: ${QUOTES_KEY}
     url: ${QUOTES_URI}
 
+springdoc:
+  swagger-ui:
+    path:
+      "/docs"
+
 #  servlet:
 #    context-path: /journal

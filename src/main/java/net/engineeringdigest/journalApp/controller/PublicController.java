@@ -1,7 +1,9 @@
 package net.engineeringdigest.journalApp.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import net.engineeringdigest.journalApp.api.response.QuotesResponse;
+import net.engineeringdigest.journalApp.dto.UserDto;
 import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.service.QuotesService;
 import net.engineeringdigest.journalApp.service.UserDetailsServiceIMPL;
@@ -21,6 +23,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/public")
 @Slf4j
+@Tag(name = "Public APIs")
+@CrossOrigin
 public class PublicController {
 
     @Autowired
@@ -46,8 +50,13 @@ public class PublicController {
     }
 
     @PostMapping("/signup")
-    public void signup(@RequestBody User user){
-        userService.saveNewUser(user);
+    public void signup(@RequestBody UserDto user){
+        User newUser = new User();
+        newUser.setEmail(user.getEmail());
+        newUser.setUserName(user.getUserName());
+        newUser.setPassword(user.getPassword());
+        newUser.setSentimentAnalysis(user.isSentimentAnalysis());
+        userService.saveNewUser(newUser);
     }
 
     @PostMapping("/login")

@@ -11,6 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/journal")
+@CrossOrigin
 public class JournalEntryControllerV2 {
 
 //    private Map<Long , JournalEntry> journalEntries = new HashMap<>();
